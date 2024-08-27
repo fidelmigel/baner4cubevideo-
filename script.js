@@ -1,15 +1,15 @@
 let y = 0;
 let autoRotateInterval;
 let mouseMoveTimeout;
-const sensitivity = 0.4; // Чутливість для миші
-const touchSensitivity = 0.5; // Зменшена чутливість для сенсорного вводу
+const sensitivity = 0.5; // Чутливість для миші
+const touchSensitivity = 0.1; // Зменшена чутливість для сенсорного вводу
 
 // Функція для автоматичного обертання
 function startAutoRotate() {
   autoRotateInterval = setInterval(() => {
     y += 1;
     updateCubeRotation();
-  }, 35); // Інтервал у мілісекундах
+  }, 55); // Інтервал у мілісекундах
 }
 
 // Зупиняємо автоматичне обертання
