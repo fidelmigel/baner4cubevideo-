@@ -20,51 +20,72 @@ function stopAutoRotate() {
 // Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
 function resetAutoRotate() {
   clearTimeout(mouseMoveTimeout);
-  mouseMoveTimeout = setTimeout(() => {
-    startAutoRotate();
-  }, 3000); // 3 секунди
+  mouseMoveTimeout = setTimeout(startAutoRotate, 3000); // 3 секунди
 }
 
 // Управління за допомогою миші
-document.addEventListener("mousemove", function (e) {
+function handleMouseMove(e) {
   stopAutoRotate();
   y += e.movementX * sensitivity; // Рух миші по горизонталі
-
   updateCubeRotation();
   resetAutoRotate();
-});
+}
 
 // Управління за допомогою сенсорного вводу (смартфон)
-document.addEventListener("touchmove", function (e) {
+function handleTouchMove(e) {
   const touch = e.touches[0];
   e.preventDefault(); // Забороняє скролінг лише при взаємодії з кубом
   stopAutoRotate();
   y += (touch.clientX - window.innerWidth / 2) * touchSensitivity; // Рух пальця по горизонталі
-
   updateCubeRotation();
   resetAutoRotate();
-});
+}
 
 // Функція для оновлення трансформації куба
 function updateCubeRotation() {
   document.querySelector(".cube").style.transform = `rotateY(${y}deg)`;
 }
 
-// Примусове відтворення відео з атрибутами
-document.querySelectorAll("video").forEach((video) => {
-  video.muted = true; // Гарантуємо вимкнення звуку
-  video.play().catch((error) => {
-    console.log("Autoplay failed:", error);
+// Функція для примусового відтворення відео з атрибутами
+function forcePlayVideos() {
+  document.querySelectorAll("video").forEach((video) => {
+    video.muted = true; // Гарантуємо вимкнення звуку
+    video.play().catch((error) => {
+      console.log("Autoplay failed:", error);
+    });
+
+    // Додаємо обробник події для циклічного відтворення
+    video.addEventListener("ended", () => {
+      video.currentTime = 0; // Повертаємося на початок відео
+      video.play().catch((error) => {
+        console.log("Play failed:", error);
+      });
+    });
   });
-});
+}
 
 // Додаємо подію для відтворення відео при взаємодії користувача
-document.querySelector(".front").addEventListener("click", function () {
-  const video = document.querySelector(".front video");
-  video.play().catch((error) => {
-    console.log("Play failed:", error);
+function addVideoPlayOnClick() {
+  document.querySelector(".front").addEventListener("click", () => {
+    const video = document.querySelector(".front video");
+    video.play().catch((error) => {
+      console.log("Play failed:", error);
+    });
   });
-});
+}
 
-// Запускаємо автоматичне обертання при завантаженні сторінки
-startAutoRotate();
+// Ініціалізація подій
+function initEvents() {
+  document.addEventListener("mousemove", handleMouseMove);
+  document.addEventListener("touchmove", handleTouchMove);
+}
+
+// Запуск функцій при завантаженні сторінки
+function init() {
+  startAutoRotate();
+  forcePlayVideos();
+  addVideoPlayOnClick();
+  initEvents();
+}
+
+init();
