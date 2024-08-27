@@ -2,7 +2,7 @@ let y = 0;
 let autoRotateInterval;
 let mouseMoveTimeout;
 const sensitivity = 1.5; // Чутливість для миші
-const touchSensitivity = 0.5; // Зменшена чутливість для сенсорного вводу
+const touchSensitivity = 0.1; // Зменшена чутливість для сенсорного вводу
 
 // Функція для автоматичного обертання
 function startAutoRotate() {
@@ -29,14 +29,14 @@ function isCursorInsideCube(e) {
   );
 }
 
-/* Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
+// Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
 function resetAutoRotate() {
   clearTimeout(mouseMoveTimeout);
   mouseMoveTimeout = setTimeout(() => {
     startAutoRotate();
   }, 3000); // 3 секунди
 }
-*/
+
 // Управління за допомогою клавіатури
 document.addEventListener("keydown", function (e) {
   stopAutoRotate();
