@@ -7,9 +7,9 @@ const touchSensitivity = 0.1; // Зменшена чутливість для с
 // Функція для автоматичного обертання
 function startAutoRotate() {
   autoRotateInterval = setInterval(() => {
-    y += 1;
+    y += 0.5; // Зменшено крок обертання для плавності
     updateCubeRotation();
-  }, 55); // Інтервал у мілісекундах
+  }, 30); // Зменшено інтервал для плавності
 }
 
 // Зупиняємо автоматичне обертання
@@ -55,6 +55,14 @@ document.querySelectorAll("video").forEach((video) => {
   video.muted = true; // Гарантуємо вимкнення звуку
   video.play().catch((error) => {
     console.log("Autoplay failed:", error);
+  });
+});
+
+// Додаємо подію для відтворення відео при взаємодії користувача
+document.querySelector(".front").addEventListener("click", function () {
+  const video = document.querySelector(".front video");
+  video.play().catch((error) => {
+    console.log("Play failed:", error);
   });
 });
 
