@@ -1,12 +1,13 @@
 let y = 0;
 let autoRotateInterval;
 let mouseMoveTimeout;
-const sensitivity = 1.5; // Зменшуємо чутливість для плавного обертання
+const sensitivity = 1.5; // Чутливість для миші
+const touchSensitivity = 0.5; // Зменшена чутливість для сенсорного вводу
 
 // Функція для автоматичного обертання
 function startAutoRotate() {
   autoRotateInterval = setInterval(() => {
-    y += 1; // Збільшуємо кут обертання
+    y += 1;
     updateCubeRotation();
   }, 25); // Інтервал у мілісекундах
 }
@@ -59,11 +60,11 @@ document.addEventListener("mousemove", function (e) {
 
 // Управління за допомогою сенсорного вводу (смартфон)
 document.addEventListener("touchmove", function (e) {
-  e.preventDefault(); // Забороняє скролінг під час сенсорного вводу
   const touch = e.touches[0];
   if (isCursorInsideCube(touch)) {
+    e.preventDefault(); // Забороняє скролінг лише при взаємодії з кубом
     stopAutoRotate();
-    y += (touch.clientX - window.innerWidth / 2) * sensitivity; // Рух пальця по горизонталі
+    y += (touch.clientX - window.innerWidth / 2) * touchSensitivity; // Рух пальця по горизонталі
 
     updateCubeRotation();
     resetAutoRotate();
@@ -74,6 +75,14 @@ document.addEventListener("touchmove", function (e) {
 function updateCubeRotation() {
   document.querySelector(".cube").style.transform = `rotateY(${y}deg)`;
 }
+
+// Примусове відтворення відео з атрибутами
+document.querySelectorAll("video").forEach((video) => {
+  video.muted = true; // Гарантуємо вимкнення звуку
+  video.play().catch((error) => {
+    console.log("Autoplay failed:", error);
+  });
+});
 
 // Запускаємо автоматичне обертання при завантаженні сторінки
 startAutoRotate();
