@@ -43,22 +43,22 @@ video {
 
 .front {
   transform: translateZ(150px);
-  background-image: url("/images/burger.jpg");
+  background-image: url("images/burger.jpg");
 }
 
 .back {
   transform: rotateY(180deg) translateZ(150px);
-  background-image: url("/images/chiken.jpg");
+  background-image: url("images/chiken.jpg");
 }
 
 .left {
   transform: rotateY(-90deg) translateZ(150px);
-  background-image: url("/images/fishandrise.jpg");
+  background-image: url("images/fishandrise.jpg");
 }
 
 .right {
   transform: rotateY(90deg) translateZ(150px);
-  background-image: url("/images/meat.jpg");
+  background-image: url("images/meat.jpg");
 }
 
 /* Медіа-запити для адаптивного дизайну */
