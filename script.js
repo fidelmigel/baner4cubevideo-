@@ -2,7 +2,7 @@ let y = 0;
 let autoRotateInterval;
 let mouseMoveTimeout;
 const sensitivity = 1.5; // Чутливість для миші
-const touchSensitivity = 0.1; // Зменшена чутливість для сенсорного вводу
+const touchSensitivity = 1.1; // Зменшена чутливість для сенсорного вводу
 
 // Функція для автоматичного обертання
 function startAutoRotate() {
