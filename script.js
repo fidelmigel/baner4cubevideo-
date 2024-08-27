@@ -29,14 +29,14 @@ function isCursorInsideCube(e) {
   );
 }
 
-// Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
+/* Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
 function resetAutoRotate() {
   clearTimeout(mouseMoveTimeout);
   mouseMoveTimeout = setTimeout(() => {
     startAutoRotate();
   }, 3000); // 3 секунди
 }
-
+*/
 // Управління за допомогою клавіатури
 document.addEventListener("keydown", function (e) {
   stopAutoRotate();
