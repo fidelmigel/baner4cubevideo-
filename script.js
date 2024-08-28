@@ -83,26 +83,16 @@ function forcePlayVideos() {
   });
 }
 
-// Додаємо подію для відтворення відео при взаємодії користувача і переходу по посиланню
+// Додаємо подію для відтворення відео при взаємодії користувача
 function addVideoPlayOnClick() {
-  const frontSide = document.querySelector(".front");
-  const video = frontSide.querySelector("video");
-
-  frontSide.addEventListener("click", (e) => {
-    // Визначаємо, чи клієнт клікнув на відео
-    const isVideoClick = e.target.tagName === "VIDEO";
-
-    if (isVideoClick) {
-      if (video.paused) {
-        video.play().catch((error) => {
-          console.log("Play failed:", error);
-        });
-      } else {
-        video.pause(); // Додаємо можливість зупинити відео при повторному кліку
-      }
+  document.querySelector(".front").addEventListener("click", () => {
+    const video = document.querySelector(".front video");
+    if (video.paused) {
+      video.play().catch((error) => {
+        console.log("Play failed:", error);
+      });
     } else {
-      // Якщо користувач клікнув поза відео, виконуємо перехід по посиланню
-      window.location.href = frontSide.href;
+      video.pause(); // Додаємо можливість зупинити відео при повторному кліку
     }
   });
 }
