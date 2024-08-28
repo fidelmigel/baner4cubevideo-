@@ -3,16 +3,12 @@ let autoRotateInterval;
 let mouseMoveTimeout;
 const sensitivity = 0.5; // Чутливість для миші
 const touchSensitivity = 0.05; // Зменшена чутливість для сенсорного вводу
-let isVideoPlaying = false; // Перевірка, чи відео програється
 
 // Функція для автоматичного обертання з використанням requestAnimationFrame
 function startAutoRotate() {
   function rotate() {
-    if (!isVideoPlaying) {
-      // Запуск обертання лише якщо відео не програється
-      y += 0.5;
-      updateCubeRotation();
-    }
+    y += 0.5;
+    updateCubeRotation();
     autoRotateInterval = requestAnimationFrame(rotate);
   }
   autoRotateInterval = requestAnimationFrame(rotate);
@@ -25,11 +21,8 @@ function stopAutoRotate() {
 
 // Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
 function resetAutoRotate() {
-  if (!isVideoPlaying) {
-    // Не запускаємо обертання, якщо відео програється
-    clearTimeout(mouseMoveTimeout);
-    mouseMoveTimeout = setTimeout(startAutoRotate, 3000); // 3 секунди
-  }
+  clearTimeout(mouseMoveTimeout);
+  mouseMoveTimeout = setTimeout(startAutoRotate, 3000); // 3 секунди
 }
 
 // Управління за допомогою миші
@@ -69,17 +62,6 @@ function forcePlayVideos() {
         console.log("Play failed:", error);
       });
     });
-
-    // Відстежуємо стан відео (грає/паузується)
-    video.addEventListener("play", () => {
-      isVideoPlaying = true; // Відео програється, зупиняємо обертання
-      stopAutoRotate();
-    });
-
-    video.addEventListener("pause", () => {
-      isVideoPlaying = false; // Відео на паузі, можемо відновити обертання
-      resetAutoRotate();
-    });
   });
 }
 
@@ -87,13 +69,9 @@ function forcePlayVideos() {
 function addVideoPlayOnClick() {
   document.querySelector(".front").addEventListener("click", () => {
     const video = document.querySelector(".front video");
-    if (video.paused) {
-      video.play().catch((error) => {
-        console.log("Play failed:", error);
-      });
-    } else {
-      video.pause(); // Додаємо можливість зупинити відео при повторному кліку
-    }
+    video.play().catch((error) => {
+      console.log("Play failed:", error);
+    });
   });
 }
 
