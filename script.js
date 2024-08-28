@@ -2,19 +2,21 @@ let y = 0;
 let autoRotateInterval;
 let mouseMoveTimeout;
 const sensitivity = 0.5; // Чутливість для миші
-const touchSensitivity = 0.1; // Зменшена чутливість для сенсорного вводу
+const touchSensitivity = 0.05; // Зменшена чутливість для сенсорного вводу
 
-// Функція для автоматичного обертання
+// Функція для автоматичного обертання з використанням requestAnimationFrame
 function startAutoRotate() {
-  autoRotateInterval = setInterval(() => {
-    y += 0.5; // Зменшено крок обертання для плавності
+  function rotate() {
+    y += 0.5;
     updateCubeRotation();
-  }, 30); // Зменшено інтервал для плавності
+    autoRotateInterval = requestAnimationFrame(rotate);
+  }
+  autoRotateInterval = requestAnimationFrame(rotate);
 }
 
 // Зупиняємо автоматичне обертання
 function stopAutoRotate() {
-  clearInterval(autoRotateInterval);
+  cancelAnimationFrame(autoRotateInterval);
 }
 
 // Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
@@ -46,10 +48,9 @@ function updateCubeRotation() {
   document.querySelector(".cube").style.transform = `rotateY(${y}deg)`;
 }
 
-// Функція для примусового відтворення відео з атрибутами
+// Примусове відтворення відео та налаштування циклічного відтворення
 function forcePlayVideos() {
   document.querySelectorAll("video").forEach((video) => {
-    video.muted = true; // Гарантуємо вимкнення звуку
     video.play().catch((error) => {
       console.log("Autoplay failed:", error);
     });
@@ -74,10 +75,21 @@ function addVideoPlayOnClick() {
   });
 }
 
+// Додаткові події для сенсорного введення
+function handleTouchStart(e) {
+  stopAutoRotate();
+}
+
+function handleTouchEnd(e) {
+  resetAutoRotate();
+}
+
 // Ініціалізація подій
 function initEvents() {
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("touchmove", handleTouchMove);
+  document.addEventListener("touchstart", handleTouchStart);
+  document.addEventListener("touchend", handleTouchEnd);
 }
 
 // Запуск функцій при завантаженні сторінки
