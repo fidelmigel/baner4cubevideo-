@@ -3,12 +3,16 @@ let autoRotateInterval;
 let mouseMoveTimeout;
 const sensitivity = 0.5; // Чутливість для миші
 const touchSensitivity = 0.05; // Зменшена чутливість для сенсорного вводу
+let isVideoPlaying = false; // Перевірка, чи відео програється
 
 // Функція для автоматичного обертання з використанням requestAnimationFrame
 function startAutoRotate() {
   function rotate() {
-    y += 0.5;
-    updateCubeRotation();
+    if (!isVideoPlaying) {
+      // Запуск обертання лише якщо відео не програється
+      y += 0.5;
+      updateCubeRotation();
+    }
     autoRotateInterval = requestAnimationFrame(rotate);
   }
   autoRotateInterval = requestAnimationFrame(rotate);
@@ -21,8 +25,11 @@ function stopAutoRotate() {
 
 // Функція для відновлення автоматичного обертання після 3 секунд без руху курсора
 function resetAutoRotate() {
-  clearTimeout(mouseMoveTimeout);
-  mouseMoveTimeout = setTimeout(startAutoRotate, 3000); // 3 секунди
+  if (!isVideoPlaying) {
+    // Не запускаємо обертання, якщо відео програється
+    clearTimeout(mouseMoveTimeout);
+    mouseMoveTimeout = setTimeout(startAutoRotate, 3000); // 3 секунди
+  }
 }
 
 // Управління за допомогою миші
@@ -62,16 +69,41 @@ function forcePlayVideos() {
         console.log("Play failed:", error);
       });
     });
+
+    // Відстежуємо стан відео (грає/паузується)
+    video.addEventListener("play", () => {
+      isVideoPlaying = true; // Відео програється, зупиняємо обертання
+      stopAutoRotate();
+    });
+
+    video.addEventListener("pause", () => {
+      isVideoPlaying = false; // Відео на паузі, можемо відновити обертання
+      resetAutoRotate();
+    });
   });
 }
 
-// Додаємо подію для відтворення відео при взаємодії користувача
+// Додаємо подію для відтворення відео при взаємодії користувача і переходу по посиланню
 function addVideoPlayOnClick() {
-  document.querySelector(".front").addEventListener("click", () => {
-    const video = document.querySelector(".front video");
-    video.play().catch((error) => {
-      console.log("Play failed:", error);
-    });
+  const frontSide = document.querySelector(".front");
+  const video = frontSide.querySelector("video");
+
+  frontSide.addEventListener("click", (e) => {
+    // Визначаємо, чи клієнт клікнув на відео
+    const isVideoClick = e.target.tagName === "VIDEO";
+
+    if (isVideoClick) {
+      if (video.paused) {
+        video.play().catch((error) => {
+          console.log("Play failed:", error);
+        });
+      } else {
+        video.pause(); // Додаємо можливість зупинити відео при повторному кліку
+      }
+    } else {
+      // Якщо користувач клікнув поза відео, виконуємо перехід по посиланню
+      window.location.href = frontSide.href;
+    }
   });
 }
 
