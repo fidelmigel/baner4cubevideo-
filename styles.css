@@ -45,22 +45,22 @@ video {
 
 .front {
   transform: translateZ(150px);
-  background-image: url("images/burger.jpg");
+  background-image: url("images/burger.png");
 }
 
 .back {
   transform: rotateY(180deg) translateZ(150px);
-  background-image: url("images/chiken.jpg");
+  background-image: url("images/chiken.png");
 }
 
 .left {
   transform: rotateY(-90deg) translateZ(150px);
-  background-image: url("images/fishandrise.jpg");
+  background-image: url("images/fishandrise.png");
 }
 
 .right {
   transform: rotateY(90deg) translateZ(150px);
-  background-image: url("images/meat.jpg");
+  background-image: url("images/meat.png");
 }
 
 @media (max-width: 600px) {
